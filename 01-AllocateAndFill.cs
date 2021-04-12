@@ -10,12 +10,16 @@ namespace EvasionPractice
     {
         static void Main(string[] args)
         {
+            byte zeroVal = 1;
             byte[] data = new byte[32768 * 32768]; 
             Array.Clear(data, 0, data.Length); 
             Console.WriteLine("~1GB filled!");
             System.Threading.Thread.Sleep(1000);
-
-            runner();
+            byte lastVal = (byte)data.GetValue((32768 * 32768)-1);
+            if (lastVal.Equals(zeroVal))
+            {
+                runner();               
+            }
         }
         static void runner()
         {
