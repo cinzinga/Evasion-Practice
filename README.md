@@ -7,3 +7,6 @@ The base code that will remain constant across all trials.
 
 ### 01-AllocateAndFill.cs ###
 Allocates a ~1.07GB byte array and zeroes it out, then checks if the last value is equal to 0. The theory is that an antivirus engine will forgo zeroing out all this memory, thus the program will quit before the shellcode runner can be examined.
+
+### 02-ManyIterations.cs ###
+Iterates through a for loop nine hundred million times in an effort to discourage AV from emulating the rest of the program.
