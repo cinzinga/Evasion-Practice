@@ -12,5 +12,9 @@ Allocates a ~1.07GB byte array and zeroes it out, then checks if the last value 
 Iterates through a for loop nine hundred million times in an effort to discourage AV from emulating the rest of the program.
 
 ### 03-OpenSystemProcess.cs ###
-
 This code attempts to open PID 4, which is a SYSTEM process. In theory, a normal user should not be able to open this process while an AV engine would be able to. This would return a null handle when run by a legitimate user. The Win32 API  ` OpenProcess` is imported for this code snippet. This API is often used in malicious code so this evasion technique may generate more detections. `0x001F0FFF` is the hexadecimal representation of `PROCESS_ALL_ACCESS`.
+
+### 04-NonExistingURL.cs ###
+This code makes an HTTP request to a fictitious domain, if no response is received (expected outcome) the shellcode runner will execute. If a response is received, this indicates some shenanigans are going on. AV sandboxes often are not allowed to make outbound requests and will instead reply with a fake response so the code may continue execution. Thus, if the code fails it is in the real world, otherwise it might be in an AV sandbox.
+
+### 05-KnownPath.cs ###
