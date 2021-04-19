@@ -18,3 +18,13 @@ This code attempts to open PID 4, which is a SYSTEM process. In theory, a normal
 This code makes an HTTP request to a fictitious domain, if no response is received (expected outcome) the shellcode runner will execute. If a response is received, this indicates some shenanigans are going on. AV sandboxes often are not allowed to make outbound requests and will instead reply with a fake response so the code may continue execution. Thus, if the code fails it is in the real world, otherwise it might be in an AV sandbox.
 
 ### 05-KnownPath.cs ###
+If the target's username is known, then it may be possible to specify specific actions that will only run in the context of that user. For example, here we are writing a file to the desktop of the user "User". Then, the contents of that file are read back, if they match what was written, the shellcode will execute.
+
+### 06-VirtualAllocExNuma.cs ###
+Some AV engine simply can not emulate all known Windows APIs. This means if they encounter an unknown API, it will stop examining the malicious program. Here we are imported the Win32 API VirtualAllocExNuma which is used to configure memory management in multiprocessing systems. If the memory allocated is not NULL, then the shellcode will execute.
+
+### 07-FlsAlloc.cs ###
+Similar logic to `06`, some AV emulators will return a failing condition when FlSAlloc is called. For future reference, `UInt32` is the C# equivalent of `DWORD` and `IntPtr.Zero` is the equivalent of `NULL`. `0xFFFFFFFF` equates to `-1` which is equivalent to failing conditions, the original code uses `FLS_OUT_OF_INDEXES`.
+
+### 08-CheckProcessMemory.cs ###
+In this example, `GetProcessMemoryInfo` is imported then information is gathered about the current process. If the the current working set (amount of memory a process requires in a given time interval) is less than 3.5MB then the shellcode executes. Much of this code can be found from the "Sample Code" section [here](https://www.pinvoke.net/default.aspx/psapi.getprocessmemoryinfo).
